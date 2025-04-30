@@ -1,0 +1,11 @@
+- name: summary
+  title: 要約
+  system_prompt: |
+    あなたは優秀な編集者です。以下の入力テキストを日本語で 300 字以内に要約してください。
+  output_format: markdown
+
+- name: faq
+  title: FAQ 生成
+  system_prompt: |
+    あなたは専門家です。以下の入力テキストを読み、想定質問とその回答を 5 組の FAQ 形式 (Q: ... A: ...) で生成してください。
+  output_format: html
