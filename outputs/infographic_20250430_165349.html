@@ -1,0 +1,426 @@
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>行政センターDX・フリーアドレス化の本質と課題</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root {
+      --fashion-1: #593C47;
+      --fashion-2: #F2E63D;
+      --fashion-3: #F2C53D;
+      --fashion-4: #F25C05;
+      --fashion-5: #F24405;
+      --main-bg: #f8fafc;
+      --card-bg: #fff;
+      --shadow: 0 2px 8px rgba(89,59,70,0.07);
+      --glass-bg: rgba(255,255,255,0.7);
+      --border-radius: 12px;
+      --header-grad: linear-gradient(90deg, #F2E63D 0%, #F25C05 100%);
+    }
+    body {
+      background: var(--main-bg);
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #334155;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 32px 36px 16px 36px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(6px);
+      border-bottom: 2px dashed var(--fashion-1);
+    }
+    .title {
+      font-size: 32px;
+      font-weight: bold;
+      background: var(--header-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+      text-shadow: 1px 2px 0 #fff7;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .subtitle {
+      font-size: 16px;
+      color: #475569;
+      margin-top: 4px;
+      margin-left: 4px;
+      font-weight: 500;
+    }
+    .date {
+      font-size: 14px;
+      color: var(--fashion-1);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    main {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 24px 24px 24px;
+      display: flex;
+      gap: 24px;
+      min-height: 80vh;
+    }
+    .col {
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 22px 20px 18px 20px;
+      position: relative;
+      margin-bottom: 4px;
+      border: 2.5px solid var(--fashion-3);
+      border-left: 8px solid var(--fashion-4);
+      transition: box-shadow .2s;
+    }
+    .card:before {
+      content: '';
+      position: absolute;
+      left: 8px; top: 8px; right: 8px; bottom: 8px;
+      border-radius: 10px;
+      border: 2px dashed var(--fashion-2);
+      pointer-events: none;
+      opacity: 0.18;
+    }
+    .section-title {
+      font-size: 18px;
+      color: #1e40af;
+      font-weight: bold;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.5px;
+    }
+    .section-title .icon {
+      font-size: 20px;
+      margin-right: 2px;
+    }
+    .marker {
+      background: linear-gradient(90deg, #F2E63D 60%, #fff 100%);
+      border-radius: 4px;
+      padding: 0 4px;
+      font-weight: bold;
+      color: var(--fashion-5);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      display: inline;
+    }
+    .underline {
+      border-bottom: 3px solid var(--fashion-4);
+      font-weight: bold;
+      color: var(--fashion-1);
+      display: inline;
+    }
+    .bubble {
+      display: inline-block;
+      background: var(--fashion-2);
+      color: var(--fashion-1);
+      border-radius: 18px;
+      padding: 2px 14px;
+      font-size: 13px;
+      font-weight: bold;
+      margin: 0 4px 0 0;
+      box-shadow: 1px 2px 6px #f2e63d33;
+    }
+    .arrow {
+      display: inline-block;
+      font-size: 22px;
+      color: var(--fashion-4);
+      margin: 0 8px;
+      vertical-align: middle;
+      font-weight: bold;
+      filter: drop-shadow(1px 1px 0 #fff7);
+    }
+    .list {
+      margin: 0 0 0 16px;
+      padding: 0;
+      list-style: none;
+    }
+    .list li {
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 1.5em;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .list li:before {
+      content: '✏️';
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 1em;
+    }
+    .icon-bubble {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--fashion-3);
+      color: var(--fashion-1);
+      border-radius: 14px;
+      padding: 2px 10px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-right: 6px;
+    }
+    .graph-bar {
+      height: 18px;
+      border-radius: 9px;
+      background: linear-gradient(90deg, var(--fashion-2) 70%, #fff 100%);
+      margin: 8px 0 0 0;
+      position: relative;
+      width: 70%;
+      box-shadow: 1px 2px 6px #f2e63d33;
+    }
+    .graph-bar span {
+      position: absolute;
+      right: 8px;
+      top: 0;
+      font-size: 13px;
+      color: var(--fashion-1);
+      font-weight: bold;
+    }
+    .speech {
+      background: var(--fashion-2);
+      color: var(--fashion-1);
+      border-radius: 16px 16px 16px 0;
+      padding: 10px 18px;
+      font-size: 14px;
+      margin: 12px 0;
+      position: relative;
+      box-shadow: 1px 2px 6px #f2e63d33;
+      border: 2px solid var(--fashion-3);
+      font-weight: 500;
+    }
+    .speech:after {
+      content: '';
+      position: absolute;
+      left: 18px;
+      bottom: -14px;
+      border-width: 14px 14px 0 0;
+      border-style: solid;
+      border-color: var(--fashion-2) transparent transparent transparent;
+      display: block;
+      width: 0;
+    }
+    .connect-arrow {
+      width: 60px;
+      height: 24px;
+      display: inline-block;
+      vertical-align: middle;
+      background: none;
+      position: relative;
+      margin: 0 8px;
+    }
+    .connect-arrow svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .highlight {
+      background: var(--fashion-4);
+      color: #fff;
+      border-radius: 6px;
+      padding: 0 6px;
+      font-weight: bold;
+      margin: 0 2px;
+    }
+    .mini-note {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 6px;
+      margin-left: 8px;
+      display: block;
+    }
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(4px);
+      border-radius: var(--border-radius);
+      padding: 10px 16px;
+      margin: 8px 0;
+      border: 1.5px solid var(--fashion-2);
+      font-size: 13px;
+      color: var(--fashion-1);
+      font-weight: 500;
+    }
+    footer {
+      width: 100%;
+      background: var(--glass-bg);
+      border-top: 2px dashed var(--fashion-1);
+      padding: 18px 36px 12px 36px;
+      font-size: 13px;
+      color: #64748b;
+      text-align: right;
+      letter-spacing: 0.5px;
+      margin-top: 32px;
+    }
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px 4vw;
+      }
+      .col {
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="title">📌 行政センターDX・フリーアドレス化の本質と課題</div>
+      <div class="subtitle">「フリーアドレス×ペーパーレス」から始まる業務改革</div>
+    </div>
+    <div class="date">2024年6月 / 出典：現場ヒアリング議事録</div>
+  </header>
+  <main>
+    <!-- 左カラム -->
+    <div class="col">
+      <div class="card">
+        <div class="section-title"><span class="icon">🔍</span>DX推進のカギは「紙」からの脱却</div>
+        <div class="speech">
+          <span class="marker">フリーアドレス</span>が完成したら、<span class="underline">DXの7割</span>は達成できるかも？
+        </div>
+        <ul class="list">
+          <li>紙があると<span class="marker">本当のフリーアドレス</span>は実現できない</li>
+          <li>ペーパーレスとフリーアドレスは<span class="marker">セット</span>で考える</li>
+          <li>紙の置き場があると<span class="highlight">「なんちゃって」</span>フリーアドレスに</li>
+        </ul>
+        <div class="mini-note">✏️ 机の上に書類を置いて帰る文化を変える必要あり</div>
+      </div>
+      <div class="card">
+        <div class="section-title"><span class="icon">🗂️</span>ペーパーレス化の現実と課題</div>
+        <div class="bubble">100%紙ゼロは難しい</div>
+        <ul class="list">
+          <li>役所業務では一部紙が残るのは避けられない</li>
+          <li>棚卸しで「なぜ紙か？」を見直し、<span class="marker">電子化できるもの</span>を特定</li>
+          <li>電子化後は<span class="marker">ファイル管理・共有ルール</span>が重要</li>
+        </ul>
+        <div class="graph-bar"><span>電子化進捗イメージ：70%</span></div>
+        <div class="mini-note">📊 地域福祉課はペーパーレス化に成功！</div>
+      </div>
+      <div class="card">
+        <div class="section-title"><span class="icon">📝</span>電子化のメリット</div>
+        <ul class="list">
+          <li>スペースが広くなる（例：30人→20席でOK）</li>
+          <li>検索性UP・書類探しの手間削減</li>
+          <li>待合スペースの確保・市民サービス向上</li>
+        </ul>
+        <div class="glass">電子化が<span class="marker">フリーアドレス化の前提</span>条件！</div>
+      </div>
+    </div>
+    <!-- 中央カラム -->
+    <div class="col">
+      <div class="card">
+        <div class="section-title"><span class="icon">📊</span>フリーアドレス化のステップ</div>
+        <ul class="list">
+          <li>① <span class="marker">書類の棚卸し</span>（現状把握）</li>
+          <li>② <span class="marker">電子化できるもの</span>の選定</li>
+          <li>③ <span class="marker">ファイル管理ルール</span>の策定</li>
+          <li>④ <span class="marker">クリアデスク化</span>（机の上を空に）</li>
+          <li>⑤ <span class="marker">意識改革</span>（現場の納得と巻き込み）</li>
+        </ul>
+        <div class="connect-arrow">
+          <svg viewBox="0 0 60 24">
+            <path d="M2 12 Q30 2 58 12" stroke="#F25C05" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+            <defs>
+              <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+                <polygon points="0 0, 8 4, 0 8" fill="#F25C05"/>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+        <div class="bubble">「魂」を込めて進める！</div>
+      </div>
+      <div class="card">
+        <div class="section-title"><span class="icon">💡</span>現場の声・現実的な悩み</div>
+        <div class="speech">
+          <span class="marker">紙が残るとDXの効果は半減</span>。<br>
+          <span class="marker">紙の保存場所</span>を作ると、結局みんなそこに入れてしまう…。
+        </div>
+        <ul class="list">
+          <li>現場の<span class="marker">意識改革</span>が最大の課題</li>
+          <li>「なんで紙が必要？」を説明できなければ<span class="highlight">不要</span></li>
+          <li>タスクを細かく切って、<span class="marker">目標日</span>を決めて進める</li>
+        </ul>
+        <div class="mini-note">🗣️「最初は過激なくらいルール厳守が大事」</div>
+      </div>
+      <div class="card">
+        <div class="section-title"><span class="icon">🖥️</span>電子申請・kintone活用</div>
+        <ul class="list">
+          <li>お客様も<span class="marker">タブレット申請</span>でペーパーレス化</li>
+          <li>kintoneで<span class="marker">相談業務の共有</span>を実現</li>
+          <li>電子化できない申請は窓口で職員がフォロー</li>
+        </ul>
+        <div class="glass">「電子化×現場サポート」で市民サービス向上！</div>
+      </div>
+    </div>
+    <!-- 右カラム -->
+    <div class="col">
+      <div class="card">
+        <div class="section-title"><span class="icon">🏢</span>理想の業務センター像</div>
+        <div class="bubble">「憧れの職場」へ</div>
+        <ul class="list">
+          <li>執務スペース縮小→待合スペース拡大</li>
+          <li>見える側は<span class="marker">スマート化</span>（電子ディスプレイ等）</li>
+          <li>職員が<span class="marker">働きたくなる</span>オフィスへ</li>
+        </ul>
+        <div class="mini-note">💬「スタートアップのようなオフィスを目指す」</div>
+      </div>
+      <div class="card">
+        <div class="section-title"><span class="icon">💰</span>コストと現実</div>
+        <ul class="list">
+          <li>オフィスリフォーム費用は<span class="marker">数百万円規模</span></li>
+          <li>一番コストがかかるのは<span class="marker">書類整理・電子化</span></li>
+          <li>地域福祉課の電子化は<span class="marker">成功事例</span></li>
+        </ul>
+        <div class="mini-note">📦「個人ケースファイルの電子化が本質」</div>
+      </div>
+      <div class="card">
+        <div class="section-title"><span class="icon">🚀</span>推進のポイント</div>
+        <ul class="list">
+          <li>現場の<span class="marker">推進リーダー</span>を選出</li>
+          <li>ブレインストーミングで<span class="marker">理想像</span>を共有</li>
+          <li>「クリアデスク化」から始めて<span class="marker">慣れ</span>を作る</li>
+        </ul>
+        <div class="glass">「魂を込めて」<span class="marker">意識改革</span>を！</div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    出典：行政センターDX推進現場ヒアリング議事録（2024年6月）<br>
+    デザイン・情報設計：グラフィックレコーディング風インフォグラフィック by GPT-4o
+  </footer>
+</body>
+</html>
+```
+---
+
+### 【特徴・ポイント解説】
+
+- **カラースキーム**は指定通りファッション系5色を基調に、強調や囲み、バナー、吹き出し、グラスモーフィズムを多用。
+- **3カラム構成**で「DX・ペーパーレスの本質」「現場の悩みと実践」「理想像と推進ポイント」を整理。
+- **手書き風の囲み線・矢印・バナー・吹き出し**でグラレコ感を演出。
+- **キーワード強調**（マーカー・下線・バブル）や**アイコン**（絵文字）を多用し、視覚的な記憶に残る設計。
+- **情報の階層・関連性**を矢印や接続線で明示。
+- **フッター**に出典を明記。
+
+---
+
+> そのままコピペでWebページとして使えます。  
+> 内容の追加・カスタマイズもご相談ください。

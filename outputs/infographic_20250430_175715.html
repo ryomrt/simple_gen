@@ -1,0 +1,429 @@
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>グラレコ風インフォグラフィック：フリーアドレスとペーパーレス化</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Noto+Sans+JP:wght@400;700&display=swap');
+
+        :root {
+            --color-fashion-1: #593C47; /* Dark Purple/Brown */
+            --color-fashion-2: #F2E63D; /* Yellow */
+            --color-fashion-3: #F2C53D; /* Gold/Orange */
+            --color-fashion-4: #F25C05; /* Orange */
+            --color-fashion-5: #F24405; /* Red-Orange */
+
+            --text-body: #334155;
+            --text-subtle: #475569;
+            --text-heading: #1e40af; /* Blue */
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --bg-main: #f8fafc;
+            --border-color: rgba(89, 59, 70, 0.3); /* Fashion-1 translucent */
+
+            --font-main: 'Noto Sans JP', sans-serif;
+            --font-handwritten: 'Mochiy Pop One', sans-serif; /* Using a rounded, slightly informal font */
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-main);
+            background-image: linear-gradient(45deg, #f9fafb 25%, transparent 25%),
+                              linear-gradient(-45deg, #f9fafb 25%, transparent 25%),
+                              linear-gradient(45deg, transparent 75%, #f9fafb 75%),
+                              linear-gradient(-45deg, transparent 75%, #f9fafb 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            margin: 0;
+            padding: 0;
+            color: var(--text-body);
+            line-height: 1.6; /* Increased slightly for readability */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 3px dashed var(--color-fashion-1);
+        }
+
+        .title {
+            font-family: var(--font-handwritten);
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--color-fashion-5), var(--color-fashion-3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+        }
+
+        .meta-info {
+            font-size: 12px;
+            color: var(--text-subtle);
+            text-align: right;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+            gap: 25px;
+        }
+
+        /* Card Component */
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px; /* Slightly more rounded */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(8px); /* Subtle Glassmorphism */
+            display: flex;
+            flex-direction: column;
+            position: relative; /* For absolute positioning of decorations */
+            overflow: hidden; /* Hide overflowing decorations */
+        }
+
+        .card::before { /* Hand-drawn corner effect */
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: 30px;
+            height: 30px;
+            border-top: 3px solid var(--color-fashion-4);
+            border-left: 3px solid var(--color-fashion-4);
+            border-radius: 16px 0 0 0;
+            opacity: 0.7;
+        }
+
+         .card::after { /* Hand-drawn corner effect */
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 30px;
+            height: 30px;
+            border-bottom: 3px solid var(--color-fashion-4);
+            border-right: 3px solid var(--color-fashion-4);
+            border-radius: 0 0 16px 0;
+            opacity: 0.7;
+        }
+
+
+        /* Section Heading */
+        .section-heading {
+            font-family: var(--font-handwritten);
+            font-size: 20px; /* Slightly larger */
+            color: var(--text-heading);
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px dotted var(--color-fashion-3);
+            padding-bottom: 5px;
+        }
+
+        .section-heading i { /* Icon styling */
+            margin-right: 8px;
+            font-size: 1.2em;
+            color: var(--color-fashion-4);
+        }
+
+        /* Body Text */
+        .card p, .card li {
+            font-size: 14px;
+            color: var(--text-body);
+            line-height: 1.6; /* Adjusted from 1.4 */
+            margin-bottom: 10px;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card li::before {
+            content: '✏️'; /* List marker */
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+
+        /* Emphasis & Highlights */
+        .highlight {
+            background-color: rgba(242, 230, 60, 0.6); /* Yellow marker effect (Fashion-2) */
+            padding: 0.1em 0.4em;
+            border-radius: 4px;
+            font-weight: bold;
+            box-decoration-break: clone; /* Handles line breaks better */
+            -webkit-box-decoration-break: clone;
+        }
+
+        .underline {
+            text-decoration: none;
+            border-bottom: 3px solid var(--color-fashion-5); /* Red-Orange underline */
+            padding-bottom: 1px;
+        }
+
+        /* Visual Elements */
+        .icon {
+            font-size: 1.5em;
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+
+        .arrow {
+            font-size: 1.8em;
+            color: var(--color-fashion-4);
+            margin: 10px 15px;
+            display: inline-block;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+         .connection-line {
+            border-bottom: 2px dashed var(--color-fashion-1);
+            margin: 15px 0;
+            opacity: 0.6;
+        }
+
+        .speech-bubble {
+            background-color: rgba(242, 196, 60, 0.1); /* Light Fashion-3 */
+            border: 1px dashed var(--color-fashion-3);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            position: relative;
+            font-style: italic;
+            color: var(--color-fashion-1);
+        }
+        .speech-bubble::before { /* Triangle for speech bubble */
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            border-width: 0 10px 10px 10px;
+            border-style: solid;
+            border-color: transparent transparent var(--color-fashion-3) transparent;
+        }
+         .speech-bubble.right::before {
+            left: auto;
+            right: 20px;
+        }
+
+        /* Specific Element Styles */
+        .banner {
+            background: linear-gradient(135deg, var(--color-fashion-3), var(--color-fashion-4));
+            color: white;
+            padding: 8px 15px;
+            margin: -20px -20px 20px -20px; /* Extend to card edges */
+            border-radius: 16px 16px 0 0; /* Match top radius */
+            font-family: var(--font-handwritten);
+            font-size: 18px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+         .banner i { /* Icon color in banner */
+             color: white;
+             margin-right: 8px;
+         }
+
+        .data-point {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--color-fashion-5);
+            margin: 5px 0;
+            display: block;
+            text-align: center;
+        }
+
+        .kintone-mention {
+            background-color: rgba(30, 64, 175, 0.1); /* Light blue */
+            border: 1px solid var(--text-heading);
+            color: var(--text-heading);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-subtle);
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr; /* Stack columns on smaller screens */
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+            .meta-info {
+                text-align: left;
+                margin-top: 5px;
+            }
+            .title {
+                font-size: 28px;
+            }
+        }
+
+        /* FontAwesome for Icons (Ensure you have this linked in a real project) */
+        /* Using simple text/emoji for now */
+
+    </style>
+    <!-- Using simple emoji as icons for self-contained example -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🏢 フリーアドレス化はDXへの道？ 📝</h1>
+            <div class="meta-info">
+                作成日: 2024/07/27<br>
+                出典: 関係者ディスカッション
+            </div>
+        </header>
+
+        <main class="main-content">
+
+            <!-- Column 1 -->
+            <div class="card">
+                <h2 class="section-heading">🎯 中核となる考え方</h2>
+                <p>超全長のフリーアドレスが実現したら、<span class="highlight">DXの7割</span>は達成していると言えるのでは？</p>
+                <p>重要なのは<span class="underline">フリーアドレスとペーパーレスはセット</span>であるという認識。</p>
+                 <div style="text-align: center; margin: 20px 0;">
+                     <span class="icon">🏢</span> <span class="arrow">🔗</span> <span class="icon">📄🚫</span>
+                     <p style="font-size: 12px; color: var(--text-subtle); margin-top: 5px;">フリーアドレス実現にはペーパーレス化が不可欠</p>
+                 </div>
+                <p>個人机がない＝<span class="highlight">書類を置いて帰る場所がない</span>。紙が残ると、共有棚は作れても「個人案件の紙」の置き場に困る。</p>
+                 <div class="speech-bubble">
+                     紙を許した状態でのフリーアドレスは、もはやフリーアドレスではない！
+                 </div>
+            </div>
+
+            <div class="card">
+                 <h2 class="section-heading">🤔 なぜ大変なのか？ (課題)</h2>
+                 <ul>
+                     <li><span class="icon">⛰️</span><span class="highlight">紙の存在：</span>役所業務は紙が多い。100%廃止は困難だが、極力減らす必要あり。</li>
+                     <li><span class="icon">🗄️</span><span class="highlight">電子化の壁：</span>どの書類を電子化できるか棚卸しと検討が必要。</li>
+                     <li><span class="icon">📂</span><span class="highlight">ファイル管理：</span>電子化しても、命名規則・保存場所ルール・共有化が不可欠。管理されないとカオスに。</li>
+                     <li><span class="icon">👥</span><span class="highlight">職員の意識改革：</span><span class="underline">最も大きな課題</span>。現状維持バイアス、変化への抵抗感。「自分ごと」として捉えてもらう必要性。</li>
+                     <li><span class="icon">🤝</span><span class="highlight">部門間連携：</span>他部署との紙ベースのやり取りが残ると、自部署だけでの電子化は限界がある。</li>
+                      <li><span class="icon">⏰</span><span class="highlight">時間と労力：</span>書類整理、電子化作業、ルール策定には相当な時間と労力がかかる。</li>
+                 </ul>
+                 <div class="speech-bubble right">
+                      「書類の山、山、山森の人」がいる現実...。説明できない書類は不要？
+                 </div>
+            </div>
+
+            <div class="card">
+                 <h2 class="section-heading">✨ フリーアドレス化のメリット</h2>
+                 <ul>
+                     <li><span class="icon">🚀</span><span class="highlight">DX推進の起爆剤：</span>紙からの脱却プロセスがDXを強制的に進める。</li>
+                     <li><span class="icon">↔️</span><span class="highlight">省スペース化：</span>全員が常に出勤するわけでないなら、職員数より少ない席数で運用可能。</li>
+                     <li><span class="icon">🔍</span><span class="highlight">検索性の向上：</span>電子化により情報アクセスが容易に。紙を探す手間削減。</li>
+                     <li><span class="icon">🏢</span><span class="highlight">職場環境の向上：</span>モダンで整理されたオフィス。「憧れの職場」へ。</li>
+                     <li><span class="icon">💡</span><span class="highlight">業務見直しの契機：</span>フリーアドレス化が「本当にその紙は必要か？」を問うきっかけに。</li>
+                      <li><span class="icon">💬</span><span class="highlight">コミュニケーション活性化：</span>席が固定されないことで、部署内・チーム内での相談や連携がしやすくなる可能性。</li>
+                 </ul>
+            </div>
+
+            <!-- Column 2 -->
+             <div class="card">
+                <h2 class="section-heading">🗺️ 実現へのステップ案</h2>
+                <ol style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom:15px;"><strong>1. 目的の明確化 <span class="icon">🎯</span></strong><br> なぜフリーアドレス？ (市民サービス向上？ 働き方改革？ DX？) コンセプトを固める。</li>
+                    <li style="margin-bottom:15px;"><strong>2. 書類の棚卸し <span class="icon">📊</span></strong><br> 現状の紙文書を把握。「なぜ紙か？」「電子化可能か？」を徹底的に洗い出す。</li>
+                    <li style="margin-bottom:15px;"><strong>3. 電子化戦略 <span class="icon">💻</span></strong><br> スキャン(PDF)が基本？ <span class="kintone-mention">kintone</span>等ツールの活用も検討。ファイル管理ルール策定。</li>
+                     <li style="margin-bottom:15px;"><strong>4. 段階的導入？ <span class="icon">🚶‍♀️</span></strong><br> まずは<span class="highlight">クリアデスク</span>から？ 小さな目標設定 (例:「この日までに印鑑廃止」)。</li>
+                     <li style="margin-bottom:15px;"><strong>5. 意識改革・巻き込み <span class="icon">🗣️</span></strong><br> 推進チーム結成。勉強会開催。成功事例共有 (地域福祉課、障害福祉課など)。</li>
+                     <li style="margin-bottom:15px;"><strong>6. ルール設定と徹底 <span class="icon">📜</span></strong><br> 例: 「終業時に机に残っているものは捨てる」(過激な例も時には有効？)。最初のルール遵守が肝心。</li>
+                     <li style="margin-bottom:15px;"><strong>7. 環境整備 <span class="icon">✨</span></strong><br> 物理的なオフィス改装 (予算確認)。リノベーションと並行して進める。</li>
+                </ol>
+                 <div class="connection-line"></div>
+                 <p style="text-align:center; font-weight:bold; color: var(--text-heading);">ペーパーレス化 <span class="arrow">➡️</span> フリーアドレス化</p>
+             </div>
+
+
+            <div class="card">
+                 <h2 class="section-heading">💡 事例とヒント</h2>
+                 <p><span class="icon">✅</span><strong>地域福祉課：</strong> ペーパーレス化に成功。個人のケースファイルを電子化。書類ゼロは難しくても「極力残さない」支援。</p>
+                 <p><span class="icon">✅</span><strong>障害福祉課：</strong> ケースワーカースペースで電子化・フリーアドレス実施。お客様スペースも確保。</p>
+                 <p><span class="icon">✅</span><strong>共通業務センター：</strong> 相談業務は <span class="kintone-mention">kintone</span> で情報共有。</p>
+                 <p><span class="icon">🌊</span><strong>水道局の事例：</strong>
+                    <ul>
+                        <li>職員に理想を考えさせる (ブレスト)</li>
+                        <li>チームを作り、コンセプト・テーマ決定</li>
+                        <li>段階的にクリアデスク化</li>
+                        <li><span class="highlight">意識改革</span>を重視</li>
+                    </ul>
+                 </p>
+                 <p><span class="icon">🔑</span><strong>専門家の活用：</strong> 書類整理や電子化のノウハウを持つ専門家（岩場先生？）の関与は、一般論（岡村さん？）より本質的かも。</p>
+            </div>
+
+            <div class="card">
+                <h2 class="section-heading">⚠️ 注意点・考慮事項</h2>
+                 <p><span class="icon">🤔</span><span class="underline">当初の目的とのズレ：</span> 元々は市民サービスの見た目改善 (案内板、カウンター整理、待合スペース) が発端。DXやフリーアドレスは後付け？ <span class="highlight">目的の再確認・共有が重要</span>。</p>
+                 <p><span class="icon">🧊</span><span class="underline">現場との温度差：</span> 企画側が「憧れの職場」を目指しても、現場職員が同じ熱量とは限らない。意識改革の難しさ。</p>
+                 <p><span class="icon">💰</span><span class="underline">コスト：</span> オフィス改装費用（数百万レベルの事例あり）より、<span class="highlight">書類整理・電子化の人的コスト</span>が本質。</p>
+                 <p><span class="icon">⏳</span><span class="underline">スケジュール感：</span> リノベーション工事の予定（例: 11月工事なら5月仕様決定）と、意識改革・書類整理のタスクをどう並行させるか。</p>
+                 <p><span class="icon">🧑‍💻</span><span class="underline">顧客接点：</span> 市民からの紙申請はどうするか？タブレット入力支援？ 全庁的な判断が必要で短期的には難しい可能性。</p>
+                 <div class="speech-bubble">
+                     「魂込めないと行けないんだよ。」 - この改革には強い意志とリーダーシップが必要。
+                 </div>
+            </div>
+
+
+            <!-- Column 3 -->
+            <div class="card" style="grid-column: span 1 / span 1; /* Adjust span as needed */">
+                 <div class="banner"><span class="icon">🏁</span> 結論：大きな挑戦、しかし価値あり</div>
+                 <p>フリーアドレス化は単なる席替えではない。<span class="highlight">業務プロセスと働き方の根本的な変革</span>を伴う。</p>
+                 <div style="text-align: center; margin: 15px 0;">
+                    <span style="font-size: 3em; color: var(--color-fashion-5);">🧗</span>
+                    <p style="color: var(--text-heading); font-weight: bold;">困難だが、乗り越えれば大きなメリット</p>
+                 </div>
+                 <p>成功の鍵は：</p>
+                 <ul style="list-style: none; padding-left: 0;">
+                     <li><span style="color: var(--color-fashion-4); margin-right: 5px;">★</span> 明確なビジョンと目的共有</li>
+                     <li><span style="color: var(--color-fashion-4); margin-right: 5px;">★</span> <span class="underline">ペーパーレス化への強いコミットメント</span></li>
+                     <li><span style="color: var(--color-fashion-4); margin-right: 5px;">★</span> 現場を巻き込んだ段階的なアプローチ</li>
+                     <li><span style="color: var(--color-fashion-4); margin-right: 5px;">★</span> 粘り強い意識改革とルール徹底</li>
+                 </ul>
+                  <div class="connection-line"></div>
+                 <p>「<span class="highlight">憧れの業務センター</span>」を目指し、課題を一つずつクリアしていく必要がある。大変だが、やる価値はある一大プロジェクト。</p>
+                 <div class="speech-bubble right">
+                      まずは<span class="underline">書類の棚卸し</span>から！ 現状把握が第一歩。
+                 </div>
+             </div>
+
+        </main>
+
+        <footer class="footer">
+            インフォグラフィック by AI | Based on discussion about Free Address implementation in Administrative Center | July 2024
+        </footer>
+    </div>
+</body>
+</html>
+```

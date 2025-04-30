@@ -5,33 +5,71 @@
   <title>Local Prompt App</title>
   <script src="/static/app.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+  <style>
+    .input-group { margin-bottom: 1em; }
+    .required { color: red; }
+    #audioStatus { color: #555; font-size: 0.9em; }
+  </style>
 </head>
 <body>
   <main>
     <h1>Local LLM Prompt App</h1>
     <form id="mainForm" action="/submit" method="post" enctype="multipart/form-data">
-      <label>プロンプト:
-        <select name="prompt_name" id="promptSelect">
-          {% for p in prompts %}
-          <option value="{{ p.name }}">{{ p.title }}</option>
-          {% endfor %}
-        </select>
-      </label>
+      <div class="input-group">
+        <label>プロンプト種類 <span class="required">*</span>:
+          <select name="prompt_name" id="promptSelect" required>
+            {% for p in prompts %}
+            <option value="{{ p.name }}">{{ p.title }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      </div>
 
-      <label>テキスト入力:
-        <textarea name="text_input" rows="10" placeholder="ここにテキストを貼り付けるか、ファイルを選択してください"></textarea>
-      </label>
+      <div class="input-group">
+        <label>テキスト入力:
+          <textarea name="text_input" rows="8" placeholder="ここにテキストを入力してください"></textarea>
+        </label>
+      </div>
 
-      <label>ファイル添付:
-        <input type="file" name="file"/>
-      </label>
+      <div class="input-group">
+        <label>ファイル添付:
+          <input type="file" name="file" accept=".txt,.pdf,.docx,.md,.wav,.mp3"/>
+        </label>
+        <small>テキストまたはファイルのどちらかを入力してください。</small>
+      </div>
 
-      <button type="submit">送信</button>
+      <button type="submit" id="submitBtn">送信</button>
     </form>
 
+    <div id="loading" style="display:none; margin-top:1em;">
+      <span class="spinner" style="display:inline-block; width:24px; height:24px; border:3px solid #ccc; border-top:3px solid #333; border-radius:50%; animation:spin 1s linear infinite;"></span>
+      <span>送信中です。しばらくお待ちください...</span>
+    </div>
+
     <h2>音声入力</h2>
-    <button id="recordBtn">● Record / Stop</button>
+    <button id="recordBtn">● 録音開始 / 停止</button>
+    <span id="audioStatus"></span>
     <p id="transcript"></p>
   </main>
+  <style>
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+  </style>
+  <script>
+    // 音声録音の進行状況表示例
+    const recordBtn = document.getElementById('recordBtn');
+    const audioStatus = document.getElementById('audioStatus');
+    recordBtn.addEventListener('click', () => {
+      audioStatus.textContent = audioStatus.textContent ? '' : '録音中...';
+    });
+
+    // 送信時のローディング表示
+    document.getElementById('mainForm').addEventListener('submit', function(e) {
+      document.getElementById('submitBtn').disabled = true;
+      document.getElementById('loading').style.display = '';
+    });
+  </script>
 </body>
 </html>
