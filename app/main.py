@@ -1,7 +1,7 @@
 import os, uuid, datetime
 from pathlib import Path
 from fastapi import FastAPI, Request, UploadFile, Form, File
-from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from .prompt_loader import load_prompts
@@ -31,7 +31,7 @@ async def index(request: Request):
     tmpl = env.get_template("index.html")
     return tmpl.render(prompts=PROMPTS)
 
-@app.post("/submit", response_class=HTMLResponse)
+@app.post("/submit")
 async def submit(
     request: Request,
     prompt_name: str = Form(...),
@@ -40,7 +40,7 @@ async def submit(
 ):
     selected = next((p for p in PROMPTS if p.name == prompt_name), None)
     if not selected:
-        return HTMLResponse("Invalid prompt", status_code=400)
+        return JSONResponse({"error": "Invalid prompt"}, status_code=400)
 
     # Gather user content
     content = text_input or ""
@@ -52,7 +52,7 @@ async def submit(
         content = extracted
 
     if not content:
-        return HTMLResponse("No input provided", status_code=400)
+        return JSONResponse({"error": "No input provided"}, status_code=400)
 
     result = run_llm(selected.system_prompt, content)
 
@@ -61,7 +61,8 @@ async def submit(
     out_path = OUTPUT_DIR / f"{prompt_name}_{timestamp}{ext}"
     out_path.write_text(result, encoding="utf-8")
 
-    return RedirectResponse(url=f"/download/{out_path.name}", status_code=303)
+    download_url = f"/download/{out_path.name}"
+    return JSONResponse({"download_url": download_url})
 
 @app.get("/download/{filename}")
 async def download(filename: str):
