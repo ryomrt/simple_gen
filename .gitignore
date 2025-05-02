@@ -2,6 +2,8 @@
 venv/
 .venv/
 
+app/__pycache__/
+
 # 環境変数ファイル
 .env
 

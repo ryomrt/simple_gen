@@ -2,68 +2,154 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <title>Local Prompt App</title>
-  <script src="/static/app.js"></script>
+  <title>シンプルドキュメント変換AI</title>
+  <!-- Google Fonts: Noto Sans JP -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/mvp.css">
   <style>
-    .input-group { margin-bottom: 1em; }
-    .required { color: red; }
-    #audioStatus { color: #555; font-size: 0.9em; }
+    body, input, textarea, select, button {
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    main {
+      max-width: 480px;
+      margin: 2em auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px #eee;
+      padding: 2.5em 2em 2em 2em;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 1.2em;
+      letter-spacing: 0.05em;
+    }
+    .input-group {
+      margin-bottom: 1.5em;
+    }
+    label {
+      font-weight: 700;
+      margin-bottom: 0.3em;
+      display: block;
+    }
+    input[type="file"] {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 0.3em;
+      background: #fafafa;
+      width: 100%;
+    }
+    textarea, select {
+      width: 100%;
+      padding: 0.7em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      margin-top: 0.2em;
+      background: #fafbfc;
+    }
+    button#submitBtn {
+      width: 100%;
+      padding: 1em;
+      font-size: 1.1em;
+      background: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      margin-top: 1em;
+      transition: background 0.2s;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    button#submitBtn:hover {
+      background: #388e3c;
+    }
+    .spinner {
+      border: 4px solid #ccc;
+      border-top: 4px solid #4caf50;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+    }
     @keyframes spin {
       0% { transform: rotate(0deg);}
       100% { transform: rotate(360deg);}
+    }
+    .fa-file-arrow-up {
+      color: #1976d2;
+      margin-right: 0.5em;
+    }
+    .fa-robot {
+      color: #4caf50;
+      margin-left: 0.3em;
+    }
+    .info-text {
+      text-align: center;
+      margin-top: 2em;
+      color: #888;
+      font-size: 0.95em;
+    }
+    .required {
+      color: #e53935;
+    }
+    small {
+      color: #888;
     }
   </style>
 </head>
 <body>
   <main>
-    <h1>Local LLM Prompt App</h1>
+    <h1>
+      <i class="fa-solid fa-file-arrow-up"></i>
+      シンプルドキュメント変換AI
+      <i class="fa-solid fa-robot"></i>
+    </h1>
     <form id="mainForm" enctype="multipart/form-data">
       <div class="input-group">
-        <label>プロンプト種類 <span class="required">*</span>:
-          <select name="prompt_name" id="promptSelect" required>
-            {% for p in prompts %}
-            <option value="{{ p.name }}">{{ p.title }}</option>
-            {% endfor %}
-          </select>
+        <label>
+          <i class="fa-solid fa-list"></i>
+          プロンプト種類 <span class="required">*</span>:
         </label>
+        <select name="prompt_name" id="promptSelect" required>
+          {% for p in prompts %}
+          <option value="{{ p.name }}">{{ p.title }}</option>
+          {% endfor %}
+        </select>
       </div>
-
       <div class="input-group">
-        <label>テキスト入力:
-          <textarea name="text_input" rows="8" placeholder="ここにテキストを入力してください"></textarea>
+        <label>
+          <i class="fa-solid fa-keyboard"></i>
+          テキスト入力:
         </label>
+        <textarea name="text_input" rows="6" placeholder="ここにテキストを入力してください（例：要約して、など）"></textarea>
       </div>
-
-      <!-- <div class="input-group">
-        <label>ファイル添付:
-          <input type="file" name="file" accept=".txt,.pdf,.docx,.md,.wav,.mp3"/>
+      <div class="input-group">
+        <label>
+          <i class="fa-solid fa-paperclip"></i>
+          ファイル添付:
         </label>
-        <small>テキストまたはファイルのどちらかを入力してください。</small>
-      </div> -->
-
-      <button type="submit" id="submitBtn">送信</button>
+        <input type="file" name="file" accept=".txt,.pdf,.docx,.md"/>
+        <small><i class="fa-solid fa-circle-info"></i> 対応: PDF, Word, テキスト, Markdown</small>
+      </div>
+      <button type="submit" id="submitBtn">
+        <i class="fa-solid fa-paper-plane"></i> 送信
+      </button>
     </form>
-
-    <div id="loading" style="display:none; margin-top:1em;">
-      <span class="spinner" style="display:inline-block; width:24px; height:24px; border:3px solid #ccc; border-top:3px solid #333; border-radius:50%; animation:spin 1s linear infinite;"></span>
-      <span id="loadingMsg">送信中です。しばらくお待ちください...</span>
+    <div id="loading" style="display:none; text-align:center; margin-top:1em;">
+      <span class="spinner"></span>
+      <span id="loadingMsg" style="display:block;margin-top:0.5em;">送信中です。しばらくお待ちください...</span>
     </div>
-
-    <h2>音声入力</h2>
-    <button id="recordBtn">● 録音開始 / 停止</button>
-    <span id="audioStatus"></span>
-    <p id="transcript"></p>
+    <div class="info-text">
+      <i class="fa-solid fa-lightbulb"></i>
+      使い方: テキストを入力するか、ファイルを添付して「送信」してください。
+    </div>
   </main>
   <script>
-    // 音声録音の進行状況表示例
-    const recordBtn = document.getElementById('recordBtn');
-    const audioStatus = document.getElementById('audioStatus');
-    recordBtn.addEventListener('click', () => {
-      audioStatus.textContent = audioStatus.textContent ? '' : '録音中...';
-    });
-
-    // 送信時のローディング表示とダウンロード制御
     document.getElementById('mainForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       document.getElementById('submitBtn').disabled = true;
@@ -84,7 +170,7 @@
           setTimeout(() => {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('submitBtn').disabled = false;
-          }, 2000); // 2秒後にローディング非表示
+          }, 2000);
         } else {
           document.getElementById('loadingMsg').textContent = 'エラーが発生しました。';
           document.getElementById('submitBtn').disabled = false;

@@ -8,4 +8,4 @@ openai>=1.13.3
 pdfminer.six
 python-docx
 requests
-openai
+google-genai
