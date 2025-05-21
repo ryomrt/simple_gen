@@ -34,3 +34,8 @@ text_app/
 ├── .env.example
 └── requirements.txt
 ```
+
+## Acknowledgements
+
+The prompt design for this project was originally based on and adapted from the prompt shared by [hAru_mAki_ch](https://x.com/hAru_mAki_ch/status/1898431078626714104).  
+Many thanks for the valuable inspiration.
