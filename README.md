@@ -1,7 +1,7 @@
 # Local LLM Prompt App
 
 A lightweight FastAPI web app that lets you paste text, upload files, or record audio,
-then pick a preset prompt to send everything to OpenAI GPT‑4/4o.  
+then pick a preset prompt to send everything to OpenAI GPT‑4.1 or Gemini 2.5 Pro.  
 Responses are saved to timestamped Markdown **or** HTML files, depending on the preset.
 
 ## Quick start (Windows PowerShell)
@@ -10,7 +10,7 @@ Responses are saved to timestamped Markdown **or** HTML files, depending on the 
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-copy .env.example .env   # add your OPENAI_API_KEY
+copy .env.example .env   # add your GEMINI_API_KEY
 uvicorn app.main:app --reload
 ```
 
