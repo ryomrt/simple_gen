@@ -1,5 +1,7 @@
 # Local LLM Prompt App
 
+![シンプルドキュメント変換AI](screenshot.png)
+
 A lightweight FastAPI web app that lets you paste text, upload files, or record audio,
 then pick a preset prompt to send everything to OpenAI GPT‑4.1 or Gemini 2.5 Pro.  
 Responses are saved to timestamped Markdown **or** HTML files, depending on the preset.
