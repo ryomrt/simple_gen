@@ -2,7 +2,7 @@ from typing import Dict
 import os
 from dotenv import load_dotenv
 
-load_dotenv
+load_dotenv(override=True)
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai").lower()
 
 # OpenAI
@@ -35,7 +35,7 @@ def run_llm(system_prompt: str, user_content: str, file_path: str = None) -> str
 
         if file_path:
             file_path = pathlib.Path(file_path)
-            # MIMEタイプ自動判定
+            """# MIMEタイプ自動判定
             ext = file_path.suffix.lower()
             if ext == ".pdf":
                 mime_type = "application/pdf"
@@ -45,13 +45,13 @@ def run_llm(system_prompt: str, user_content: str, file_path: str = None) -> str
                 mime_type = "text/plain"
             elif ext == ".md":
                 mime_type = "text/markdown"
-            else:
-                mime_type = "application/octet-stream"  # ← 不明な場合はこれ
+            #else:
+            #    mime_type = "application/octet-stream"  # ← 不明な場合はこれ """
             
             # ファイルアップロード
             sample_file = client.files.upload(
-                file=file_path,
-                config=dict(mime_type=mime_type) if mime_type else None
+                file=file_path#,
+                #config=dict(mime_type=mime_type) if mime_type else None
             )
             response = client.models.generate_content(
                 model=GEMINI_MODEL,
